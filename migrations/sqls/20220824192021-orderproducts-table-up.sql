@@ -1,5 +1,3 @@
-/* Replace with your SQL commands */
-
 CREATE TABLE orderproducts (
     id SERIAL PRIMARY KEY,
     quantity integer NOT NULL,
