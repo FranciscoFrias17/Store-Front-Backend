@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { User, UserStore } from "../models/user";
 import jwt from "jsonwebtoken";
+import verifyAuthToken from "../middleware/verifyToken";
 
 const store = new UserStore();
 
@@ -58,8 +59,8 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const user_routes = (app: express.Application) => {
-  app.get("/users", index);
-  app.get("/users/:id", /* TODO ADD JWT */ show);
+  app.get("/users", verifyAuthToken, index);
+  app.get("/users/:id", verifyAuthToken, show);
   app.post("/users", create);
   app.get("/user/authenticate", authenticate);
 };

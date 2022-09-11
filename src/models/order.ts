@@ -38,6 +38,18 @@ export class OrderStore {
     }
   }
 
+  async showUserOrders(userId: string): Promise<Order[]> {
+    try {
+      const sql = "SELECT * FROM orders WHERE userId=($1)";
+      const conn = await client.connect();
+      const result = await conn.query(sql, [userId]);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not find order ${userId}. Error: ${err}`);
+    }
+  }
+
   async create(o: Order): Promise<Order> {
     try {
       const sql =
@@ -52,16 +64,23 @@ export class OrderStore {
     }
   }
 
-  async delete(id: string): Promise<Order> {
+  async addProduct(op: OrderProduct): Promise<OrderProduct> {
     try {
-      const sql = "DELETE FROM orders WHERE id=($1)";
+      const sql =
+        "INSERT INTO order_products (orderId, productId, quantity) VALUES($1, $2, $3) RETURNING *";
       const conn = await client.connect();
-      const result = await conn.query(sql, [id]);
-      const order = result.rows[0];
+      const result = await conn.query(sql, [
+        op.orderId,
+        op.productId,
+        op.quantity,
+      ]);
+      const orderProduct = result.rows[0];
       conn.release();
-      return order;
+      return orderProduct;
     } catch (err) {
-      throw new Error(`Could not delete order ${id}. Error: ${err}`);
+      throw new Error(
+        `Could not add new order product ${op.id}. Error: ${err}`
+      );
     }
   }
 }
