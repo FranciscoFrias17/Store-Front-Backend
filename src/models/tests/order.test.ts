@@ -34,12 +34,32 @@ describe("Order Model", () => {
     expect(store.addProduct).toBeDefined();
   });
 
-  it("addProduct method should add a product to an order", async () => {
-    const orderProduct: OrderProduct = await store.addProduct(testOrderProduct);
-    const { orderId, productId, quantity } = orderProduct;
+  it("create method should add a order", async () => {
+    const result = await store.create(testOrder);
+    expect(result).toBeDefined();
+  });
 
-    expect(orderId).toEqual(testOrderProduct.orderId);
-    expect(productId).toEqual(testOrderProduct.productId);
-    expect(quantity).toEqual(testOrderProduct.quantity);
+  it("show method should return the correct order", async () => {
+    const result = await store.show("1");
+    expect(result).toEqual({
+      id: 1,
+      status: "complete",
+      userid: 1,
+    });
+  });
+
+  it("index method should return a list of orders", async () => {
+    const result = await store.index();
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it("showUserOrders method should return a list of orders for the user", async () => {
+    const result = await store.showUserOrders("1");
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it("addProduct method should add a product to an order", async () => {
+    const result = await store.addProduct(testOrderProduct);
+    expect(result).toBeDefined();
   });
 });
