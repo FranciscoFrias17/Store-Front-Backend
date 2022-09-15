@@ -9,14 +9,14 @@ let server: Server;
 describe("Order Routes handling", () => {
   server = app.listen();
 
-  it("should have a index route", async () => {
+  it("Unauthorized to get index route without a valid token", async () => {
     const response = await request(server).get("/orders");
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(401);
   });
 
-  it("should have a show route", async () => {
+  it("Unauthorized to get order route without a valid token", async () => {
     const response = await request(server).get("/orders/1");
-    expect(response.status).toEqual(200);
+    expect(response.status).toEqual(401);
   });
 
   it("Unauthorized to get user order without a token", async () => {
