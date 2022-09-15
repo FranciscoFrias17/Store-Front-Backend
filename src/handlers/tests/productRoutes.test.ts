@@ -1,7 +1,12 @@
 import request from "supertest";
 import app from "../../server";
 import { Server } from "http";
+import jwt, { Secret } from "jsonwebtoken";
+import dotenv from "dotenv";
 
+dotenv.config();
+
+const token = jwt.sign({ user: { id: 1 } }, process.env.TOKEN_SECRET as Secret);
 let server: Server;
 
 describe("Product Routes handling", () => {
@@ -20,5 +25,15 @@ describe("Product Routes handling", () => {
   it("Unauthorized to create product without a valid token", async () => {
     const response = await request(server).post("/products");
     expect(response.status).toEqual(401);
+  });
+});
+
+describe("Product Routes handling with token authorization", () => {
+  it("Create product with a valid token", async () => {
+    const response = await request(server)
+      .post("/products")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ name: "test product", price: 10 });
+    expect(response.status).toEqual(200);
   });
 });
