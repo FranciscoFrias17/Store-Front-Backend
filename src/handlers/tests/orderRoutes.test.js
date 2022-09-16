@@ -12,6 +12,13 @@ dotenv_1.default.config();
 const token = jsonwebtoken_1.default.sign({ user: { id: 1 } }, process.env.TOKEN_SECRET);
 const store = new order_1.OrderStore();
 let server;
+beforeAll(async () => {
+    jest.resetModules();
+    process.env.NODE_ENV = "test";
+});
+afterAll(async () => {
+    server.close();
+});
 describe("Order Routes handling", () => {
     server = server_1.default.listen();
     it("Unauthorized to get index route without a valid token", async () => {

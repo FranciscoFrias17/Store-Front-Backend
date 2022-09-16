@@ -10,6 +10,13 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const token = jsonwebtoken_1.default.sign({ user: { id: 1 } }, process.env.TOKEN_SECRET);
 let server;
+beforeAll(async () => {
+    jest.resetModules();
+    process.env.NODE_ENV = "test";
+});
+afterAll(async () => {
+    server.close();
+});
 describe("Product Routes handling", () => {
     server = server_1.default.listen();
     it("should have a index route", async () => {

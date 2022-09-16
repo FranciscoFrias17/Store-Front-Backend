@@ -9,6 +9,15 @@ dotenv.config();
 const token = jwt.sign({ user: { id: 1 } }, process.env.TOKEN_SECRET as Secret);
 let server: Server;
 
+beforeAll(async () => {
+  jest.resetModules();
+  process.env.NODE_ENV = "test";
+});
+
+afterAll(async () => {
+  server.close();
+});
+
 describe("User Routes handling", () => {
   server = app.listen();
 

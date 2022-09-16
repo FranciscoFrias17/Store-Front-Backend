@@ -11,6 +11,15 @@ const token = jwt.sign({ user: { id: 1 } }, process.env.TOKEN_SECRET as Secret);
 const store = new OrderStore();
 let server: Server;
 
+beforeAll(async () => {
+  jest.resetModules();
+  process.env.NODE_ENV = "test";
+});
+
+afterAll(async () => {
+  server.close();
+});
+
 describe("Order Routes handling", () => {
   server = app.listen();
 
