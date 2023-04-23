@@ -1,8 +1,8 @@
-# Storefront Backend Project
+# Storefront Backend
 
 ## Description
 
-This is my backend project for the Udacity Masterschool NanoDegree. It is a simple API for a store. The database is a Postgres database.
+This is a backend API for a store. The database is a Postgres database. After the postgres database is setup the user can store orders and products to their respective database user.
 
 ## Instructions
 
